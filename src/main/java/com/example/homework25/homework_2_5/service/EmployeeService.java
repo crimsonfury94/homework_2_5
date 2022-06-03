@@ -2,13 +2,16 @@ package com.example.homework25.homework_2_5.service;
 
 import com.example.homework25.homework_2_5.data.Employee;
 
-import java.util.List;
+import java.util.Collection;
 
 public interface EmployeeService {
 
-    void addEmployee(Employee employee);
+    Employee addEmployee(String firstName, String lastName);
 
-    void deleteEmployee(Employee employee);
+    Employee deleteEmployee(String firstName, String lastName);
 
-    String getEmployee(Employee employee);//Employee employee
+    Employee getEmployee(String firstName, String lastName);
+
+    Collection<Employee> findAll();
+
 }
