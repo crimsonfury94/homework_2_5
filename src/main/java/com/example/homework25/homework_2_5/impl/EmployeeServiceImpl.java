@@ -6,53 +6,50 @@ import com.example.homework25.homework_2_5.exceptions.EmployeeNotFoundException;
 import com.example.homework25.homework_2_5.service.EmployeeService;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-    private final List<Employee> employeeList;
+    private final Map<Integer, Employee> employees;
 
-    public EmployeeServiceImpl(List<Employee> employeeList) {
-        this.employeeList = employeeList;
+    public EmployeeServiceImpl() {
+        this.employees = new HashMap<>();
     }
 
     @Override
-    public Employee addEmployee(String firstName, String lastName) {
+    public Employee addEmployee(int id, String firstName, String lastName) {
 
-        Employee employee = new Employee(firstName, lastName);
-        if (employeeList.contains(employee)) {
+        Employee employee = new Employee(id, firstName, lastName);
+        if (employees.containsKey(employee.getId())) {
             throw new EmployeeAlreadyAddedException();
         }
-        employeeList.add(employee);
+        employees.put(employee.getId(), employee);
         return employee;
     }
 
 
     @Override
-    public Employee deleteEmployee(String firstName, String lastName) {
-        Employee employee = new Employee(firstName, lastName);
-        if (employeeList.contains(employee)) {
-            employeeList.remove(employee);
-            return employee;
+    public Employee deleteEmployee(int id, String firstName, String lastName) {
+        Employee employee = new Employee(id, firstName, lastName);
+        if (employees.containsKey(employee.getId())) {
+            return employees.remove(employee.getId());
         }
         throw new EmployeeNotFoundException();
     }
 
 
     @Override
-    public Employee getEmployee(String firstName, String lastName) {
-        Employee employee = new Employee(firstName, lastName);
-        if (employeeList.contains(employee)) {
-            return employee;
+    public Employee getEmployee(int id, String firstName, String lastName) {
+        Employee employee = new Employee(id, firstName, lastName);
+        if (employees.containsKey(employee.getId())) {
+            return employees.get(employee.getId());
         }
         throw new EmployeeNotFoundException();
     }
 
     @Override
     public Collection<Employee> findAll() {
-        return Collections.unmodifiableList(employeeList);
+        return Collections.unmodifiableCollection(employees.values());
     }
 }
