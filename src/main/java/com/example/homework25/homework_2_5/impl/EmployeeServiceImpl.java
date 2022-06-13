@@ -5,6 +5,7 @@ import com.example.homework25.homework_2_5.exceptions.EmployeeAlreadyAddedExcept
 import com.example.homework25.homework_2_5.exceptions.EmployeeNotFoundException;
 import com.example.homework25.homework_2_5.exceptions.EmployeeStorageIsFullException;
 import com.example.homework25.homework_2_5.service.EmployeeService;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -21,9 +22,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee addEmployee(String firstName, String lastName) {
+    public Employee addEmployee(String firstName, String lastName, int department, int workersSalary) {
 
-        Employee employee = new Employee(firstName, lastName);
+        Employee employee = new Employee(firstName, lastName, department, workersSalary);
 
         if (employees.containsKey(getKey(employee))) {
 
@@ -39,8 +40,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 
     @Override
-    public Employee deleteEmployee(String firstName, String lastName) {
-        Employee employee = new Employee(firstName, lastName);
+    public Employee deleteEmployee(String firstName, String lastName, int department, int workersSalary) {
+        Employee employee = new Employee(firstName, lastName, department, workersSalary);
         if (!employees.containsKey(getKey(employee))) {
             throw new EmployeeNotFoundException();
         }
@@ -49,13 +50,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 
     @Override
-    public Employee getEmployee(String firstName, String lastName) {
-        Employee employee = new Employee(firstName, lastName);
+    public Employee getEmployee(String firstName, String lastName, int department, int workersSalary) {
+        Employee employee = new Employee(firstName, lastName, department, workersSalary);
         if (!employees.containsKey(getKey(employee))) {
             throw new EmployeeNotFoundException();
         }
         return employee;
     }
+
 
     @Override
     public List<Employee> findAll() {
