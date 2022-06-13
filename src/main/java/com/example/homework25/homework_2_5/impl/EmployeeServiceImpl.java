@@ -3,6 +3,7 @@ package com.example.homework25.homework_2_5.impl;
 import com.example.homework25.homework_2_5.data.Employee;
 import com.example.homework25.homework_2_5.exceptions.EmployeeAlreadyAddedException;
 import com.example.homework25.homework_2_5.exceptions.EmployeeNotFoundException;
+import com.example.homework25.homework_2_5.exceptions.EmployeeStorageIsFullException;
 import com.example.homework25.homework_2_5.service.EmployeeService;
 import org.springframework.stereotype.Service;
 
@@ -11,45 +12,53 @@ import java.util.*;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-    private final Map<Integer, Employee> employees;
+    private static final int LIMIT = 10;
 
-    public EmployeeServiceImpl() {
-        this.employees = new HashMap<>();
+    private final Map<String, Employee> employees = new HashMap<>();
+
+    private String getKey(Employee employee) {
+        return employee.getFirstName() + employee.getLastName();
     }
 
     @Override
-    public Employee addEmployee(int id, String firstName, String lastName) {
+    public Employee addEmployee(String firstName, String lastName) {
 
-        Employee employee = new Employee(id, firstName, lastName);
-        if (employees.containsKey(employee.getId())) {
+        Employee employee = new Employee(firstName, lastName);
+
+        if (employees.containsKey(getKey(employee))) {
+
             throw new EmployeeAlreadyAddedException();
         }
-        employees.put(employee.getId(), employee);
+
+        if (employees.size() < LIMIT) {
+            return employees.put(getKey(employee), employee);
+
+        }
+        throw new EmployeeStorageIsFullException();
+    }
+
+
+    @Override
+    public Employee deleteEmployee(String firstName, String lastName) {
+        Employee employee = new Employee(firstName, lastName);
+        if (!employees.containsKey(getKey(employee))) {
+            throw new EmployeeNotFoundException();
+        }
+        return employees.remove(getKey(employee));
+    }
+
+
+    @Override
+    public Employee getEmployee(String firstName, String lastName) {
+        Employee employee = new Employee(firstName, lastName);
+        if (!employees.containsKey(getKey(employee))) {
+            throw new EmployeeNotFoundException();
+        }
         return employee;
     }
 
-
     @Override
-    public Employee deleteEmployee(int id, String firstName, String lastName) {
-        Employee employee = new Employee(id, firstName, lastName);
-        if (employees.containsKey(employee.getId())) {
-            return employees.remove(employee.getId());
-        }
-        throw new EmployeeNotFoundException();
-    }
-
-
-    @Override
-    public Employee getEmployee(int id, String firstName, String lastName) {
-        Employee employee = new Employee(id, firstName, lastName);
-        if (employees.containsKey(employee.getId())) {
-            return employees.get(employee.getId());
-        }
-        throw new EmployeeNotFoundException();
-    }
-
-    @Override
-    public Collection<Employee> findAll() {
-        return Collections.unmodifiableCollection(employees.values());
+    public List<Employee> findAll() {
+        return new ArrayList<>(employees.values());
     }
 }

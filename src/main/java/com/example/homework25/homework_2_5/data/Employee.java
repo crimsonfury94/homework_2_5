@@ -5,13 +5,12 @@ import java.util.Objects;
 public class Employee {
     private final String firstName;
     private final String lastName;
-    private final int id;
-    private static int counter = 1;
 
-    public Employee(int id, String firstName, String lastName) {
+
+    public Employee(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.id = counter++;
+
     }
 
     public String getFirstName() {
@@ -22,9 +21,6 @@ public class Employee {
         return lastName;
     }
 
-    public Integer getId() {
-        return id;
-    }
 
     @Override
     public String toString() {

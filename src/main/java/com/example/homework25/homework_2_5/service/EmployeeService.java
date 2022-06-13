@@ -6,11 +6,11 @@ import java.util.Collection;
 
 public interface EmployeeService {
 
-    Employee addEmployee(int id, String firstName, String lastName);
+    Employee addEmployee(String firstName, String lastName);
 
-    Employee deleteEmployee(int id, String firstName, String lastName);
+    Employee deleteEmployee(String firstName, String lastName);
 
-    Employee getEmployee(int id, String firstName, String lastName);
+    Employee getEmployee(String firstName, String lastName);
 
     Collection<Employee> findAll();
 

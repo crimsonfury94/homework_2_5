@@ -19,24 +19,24 @@ public class EmployeeController {
     }
 
     @GetMapping(path = "/add")
-    public Employee addEmployee(int id, String firstName,
+    public Employee addEmployee(String firstName,
                                 String lastName) {
 
-        return employeeService.addEmployee(id, firstName, lastName);
+        return employeeService.addEmployee(firstName, lastName);
     }
 
     @GetMapping(path = "/remove")
-    public Employee removeEmployee(int id, String firstName,
+    public Employee removeEmployee(String firstName,
                                    String lastName) {
 
-        return employeeService.deleteEmployee(id, firstName, lastName);
+        return employeeService.deleteEmployee(firstName, lastName);
     }
 
     @GetMapping(path = "/find")
-    public Employee findEmployee(int id,String firstName,
+    public Employee findEmployee(String firstName,
                                  String lastName) {
 
-        return employeeService.getEmployee(id, firstName, lastName);
+        return employeeService.getEmployee(firstName, lastName);
     }
 
     @GetMapping
