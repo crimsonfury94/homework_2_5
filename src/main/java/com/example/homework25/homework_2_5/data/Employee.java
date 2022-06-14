@@ -26,7 +26,7 @@ public class Employee {
         return department;
     }
 
-    public double getWorkersSalary() {
+    public int getWorkersSalary() {
         return workersSalary;
     }
 
