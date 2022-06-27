@@ -14,6 +14,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.apache.commons.lang3.StringUtils.*;
+
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
@@ -46,6 +48,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee deleteEmployee(String firstName, String lastName, int department, int workersSalary) {
         Employee employee = new Employee(firstName, lastName, department, workersSalary);
+        mistakes(employee);
         if (!employees.containsKey(getKey(employee))) {
             throw new EmployeeNotFoundException();
         }
@@ -56,6 +59,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee getEmployee(String firstName, String lastName, int department, int workersSalary) {
         Employee employee = new Employee(firstName, lastName, department, workersSalary);
+        mistakes(employee);
         if (!employees.containsKey(getKey(employee))) {
             throw new EmployeeNotFoundException();
         }
@@ -69,7 +73,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     private void mistakes(Employee employee) {
-        if (StringUtils.isAllLowerCase(employee.getFirstName()) || StringUtils.isAllLowerCase(employee.getLastName())) {
+        if (!(isAlpha(employee.getFirstName()) || isAlpha(employee.getLastName()))) {
             throw new BadRequestException();
         }
     }
