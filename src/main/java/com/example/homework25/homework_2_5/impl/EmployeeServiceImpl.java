@@ -1,14 +1,18 @@
 package com.example.homework25.homework_2_5.impl;
 
 import com.example.homework25.homework_2_5.data.Employee;
+import com.example.homework25.homework_2_5.exceptions.BadRequestException;
 import com.example.homework25.homework_2_5.exceptions.EmployeeAlreadyAddedException;
 import com.example.homework25.homework_2_5.exceptions.EmployeeNotFoundException;
 import com.example.homework25.homework_2_5.exceptions.EmployeeStorageIsFullException;
 import com.example.homework25.homework_2_5.service.EmployeeService;
-import org.springframework.stereotype.Component;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -25,15 +29,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee addEmployee(String firstName, String lastName, int department, int workersSalary) {
 
         Employee employee = new Employee(firstName, lastName, department, workersSalary);
-
+        mistakes(employee);
         if (employees.containsKey(getKey(employee))) {
 
             throw new EmployeeAlreadyAddedException();
         }
 
         if (employees.size() < LIMIT) {
-            return employees.put(getKey(employee), employee);
-
+            employees.put(getKey(employee), employee);
+            return employee;
         }
         throw new EmployeeStorageIsFullException();
     }
@@ -62,5 +66,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<Employee> findAll() {
         return new ArrayList<>(employees.values());
+    }
+
+    private void mistakes(Employee employee) {
+        if (StringUtils.isAllLowerCase(employee.getFirstName()) || StringUtils.isAllLowerCase(employee.getLastName())) {
+            throw new BadRequestException();
+        }
     }
 }

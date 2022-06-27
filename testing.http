@@ -1,0 +1,13 @@
+GET http://localhost:8080/employee/add?firstName=Ivan&lastName=Petrov&department=5&workersSalary=30000
+###
+GET http://localhost:8080/employee/add?firstName=Dvan&lastName=Petrov&department=5&workersSalary=30000
+###
+GET http://localhost:8080/employee/add?firstName=dvan&lastName=petrov&department=5&workersSalary=30000
+###
+GET http://localhost:8080/employee/add?firstName=dvan&lastName=Petrov&department=5&workersSalary=30000
+###
+GET http://localhost:8080/employee/add?firstName=avan&lastName=zetrov&department=5&workersSalary=30000
+###
+GET http://localhost:8080/employee/add?firstName=aVan&lastName=zetRov&department=5&workersSalary=30000
+###
+GET http://localhost:8080/employee
