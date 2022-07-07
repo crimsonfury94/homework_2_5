@@ -1,10 +1,6 @@
 package com.example.homework25.homework_2_5.data;
 
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.Locale;
-
-import static org.apache.commons.lang3.StringUtils.*;
+import static org.apache.commons.lang3.StringUtils.capitalize;
 
 public class Employee {
     private final String firstName;
