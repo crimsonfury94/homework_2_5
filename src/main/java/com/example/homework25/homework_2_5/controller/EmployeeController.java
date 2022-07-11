@@ -29,20 +29,16 @@ public class EmployeeController {
 
     @GetMapping(path = "/remove")
     public Employee removeEmployee(String firstName,
-                                   String lastName,
-                                   int department,
-                                   int workersSalary) {
+                                   String lastName) {
 
-        return employeeService.deleteEmployee(firstName, lastName, department, workersSalary);
+        return employeeService.deleteEmployee(firstName, lastName);
     }
 
     @GetMapping(path = "/find")
     public Employee findEmployee(String firstName,
-                                 String lastName,
-                                 int department,
-                                 int workersSalary) {
+                                 String lastName) {
 
-        return employeeService.getEmployee(firstName, lastName, department, workersSalary);
+        return employeeService.getEmployee(firstName, lastName);
     }
 
     @GetMapping

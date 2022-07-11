@@ -8,9 +8,9 @@ public interface EmployeeService {
 
     Employee addEmployee(String firstName, String lastName, int department, int workersSalary);
 
-    Employee deleteEmployee(String firstName, String lastName, int department, int workersSalary);
+    Employee deleteEmployee(String firstName, String lastName);
 
-    Employee getEmployee(String firstName, String lastName, int department, int workersSalary);
+    Employee getEmployee(String firstName, String lastName);
 
     Collection<Employee> findAll();
 

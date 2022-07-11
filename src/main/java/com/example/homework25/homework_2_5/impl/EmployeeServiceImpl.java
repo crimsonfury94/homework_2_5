@@ -1,12 +1,11 @@
 package com.example.homework25.homework_2_5.impl;
 
 import com.example.homework25.homework_2_5.data.Employee;
-import com.example.homework25.homework_2_5.exceptions.BadRequestException;
 import com.example.homework25.homework_2_5.exceptions.EmployeeAlreadyAddedException;
 import com.example.homework25.homework_2_5.exceptions.EmployeeNotFoundException;
 import com.example.homework25.homework_2_5.exceptions.EmployeeStorageIsFullException;
+import com.example.homework25.homework_2_5.exceptions.WrongNameException;
 import com.example.homework25.homework_2_5.service.EmployeeService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.apache.commons.lang3.StringUtils.*;
+import static org.apache.commons.lang3.StringUtils.isAlpha;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -23,22 +22,22 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private final Map<String, Employee> employees = new HashMap<>();
 
-    private String getKey(Employee employee) {
-        return employee.getFirstName() + employee.getLastName();
+    private String getKey(String firstName, String lastName ) {
+        return firstName + " " + lastName;
     }
 
     @Override
     public Employee addEmployee(String firstName, String lastName, int department, int workersSalary) {
 
         Employee employee = new Employee(firstName, lastName, department, workersSalary);
+        String key = getKey(firstName, lastName);
         mistakes(employee);
-        if (employees.containsKey(getKey(employee))) {
-
+        if (employees.containsKey(key)) {
             throw new EmployeeAlreadyAddedException();
         }
 
         if (employees.size() < LIMIT) {
-            employees.put(getKey(employee), employee);
+            employees.put(key, employee);
             return employee;
         }
         throw new EmployeeStorageIsFullException();
@@ -46,24 +45,26 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 
     @Override
-    public Employee deleteEmployee(String firstName, String lastName, int department, int workersSalary) {
-        Employee employee = new Employee(firstName, lastName, department, workersSalary);
-        mistakes(employee);
-        if (!employees.containsKey(getKey(employee))) {
+    public Employee deleteEmployee(String firstName, String lastName) {
+
+        String key = getKey(firstName, lastName);
+        if (!employees.containsKey(key)) {
             throw new EmployeeNotFoundException();
         }
-        return employees.remove(getKey(employee));
+        Employee employee = employees.get(key);
+        mistakes(employee);
+        employees.remove(key);
+        return employee;
     }
 
 
     @Override
-    public Employee getEmployee(String firstName, String lastName, int department, int workersSalary) {
-        Employee employee = new Employee(firstName, lastName, department, workersSalary);
-        mistakes(employee);
-        if (!employees.containsKey(getKey(employee))) {
+    public Employee getEmployee(String firstName, String lastName) {
+        String key = getKey(firstName, lastName);
+        if (!employees.containsKey(key)) {
             throw new EmployeeNotFoundException();
         }
-        return employee;
+        return employees.get(key);
     }
 
 
@@ -74,7 +75,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private void mistakes(Employee employee) {
         if (!(isAlpha(employee.getFirstName()) || isAlpha(employee.getLastName()))) {
-            throw new BadRequestException();
+            throw new WrongNameException();
         }
     }
 }
